@@ -5,21 +5,33 @@ import { PeopleList } from './PeopleList';
 export class App extends React.Component {
 
   constructor(props){
-    super(props);
+    super(props);    
+    this.apiBaseUrl = "https://localhost:44324/api/";
     this.state = {
-      peopleList: [
-        {id: 1, name: 'John'},
-        {id: 2, name: 'Sarah'}
-      ]
+      peopleList: []
     };
+    this.loadPeople();
   }
+
+  loadPeople(){
+    fetch(this.apiBaseUrl + "people")
+    .then(res => res.json())
+    .then(
+        (result) => {
+          this.setState({peopleList: result});
+        },        
+        (error) => {
+          console.log(error);
+        }
+    );
+  } 
   
   render(){
     return (
       <div className="App">
         <PeopleList people={this.state.peopleList} deletePerson={(person)=> {        
-          console.log(person.name + ' was deleted.');
-          this.setState({peopleList: [{id:2, name: 'Sarah'}]});
+          console.log(person.Name + ' was deleted.');
+          this.setState({peopleList: [{Id:2, Name: 'Sarah'}]});
         }}/>
 
         {/* <nav>
